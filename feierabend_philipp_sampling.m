@@ -1,57 +1,41 @@
-
-% Aufgabe 2.2 - Abtastung des Signals
-%
-% Aufgabenstellung:
-% 2.2 Abtastung
-% Die Funktion Name_Vorname_sampling soll folgende Parameter erhalten:
-% - Den Signalnamen signal.
-% - Die Gesamtzeit T.
-% - Abtastrate Torig des originalen Signals.
-% - Abtastfaktor k.
-% Ausgabe ist das abgetastete Signal ys.
-%
-% Aufgaben:
-% 1. Führen Sie eine Abtastung des Signals mit einem Faktor von 4 durch. Die ursprüngliche Abtastfrequenz betrug 128 Hertz.
-% 2. Plotten Sie das abgetastete Signal gegen die Zeit.
-% 3. Stellen Sie den Plot mit passenden Beschriftungen der x-Achse (Zeit /s) und y-Achse (Amplitude) dar.
-% 4. Stellen Sie nur die ersten 30 Sekunden des Signals dar.
-
-% Funktion zur Abtastung des Signals
-% Eingabe:
-% signal - Der Name des zu ladenden Signals
-% T - Die Gesamtzeit des Signals
-% Torig - Die ursprüngliche Abtastrate des Signals
-% k - Der Abtastfaktor
-
-function feierabend_philipp_sampling(signal, T, Torig, k)
-    % Laden der Datei 'noisy_ecg.mat', die das verrauschte EKG-Signal enthält
-    load('noisy_ecg.mat');
+function feierabend_philipp_sampling(signal, T, T_orig, k)
+    disp('-------------------------------------------------------------');
+    disp('Task 2.2');
+    disp('-------------------------------------------------------------');  
     
-    % Berechnung der neuen Abtastrate
-    fs_new = Torig / k;
-    
-    % Abtastung des Signals
-    ys = noisy_ecg(1:k:end);
-    t_new = t(1:k:end);
-    
-    % Erstellen einer neuen Figur für den Plot
+    % Health Bot Introduction
+    disp('Health Bot: Oh, I have a new task! Let me get started on sampling your ECG signal...'); 
+    pause(2);
+    disp('Health Bot: Just a moment, I am almost done...');
+    pause(2);
+
+    % Calculation of the new sampling rate
+    T_s = 1 / (T_orig / k);  % New sampling time (s) needed to sample the signal with a factor of k
+
+    % Create the time vector for the sampled signal
+    t_sampled = 0:T_s:T;  % Time vector for the sampled signal, from 0 to T
+
+    t = linspace(0, T, length(signal));         % Reconstruct the time vector from total time
+
+    % Interpolation for signal resampling
+    signal_sampled = interp1(t, signal, t_sampled, 'spline');  % Interpolate the signal to the new time axis
+
+    % Limit the plot to the first 30 seconds
+    t_sampled_30sec = t_sampled(t_sampled <= 30);  % Time vector limited to 30 seconds
+    signal_sampled_30sec = signal_sampled(1:length(t_sampled_30sec));  % Corresponding sampled signal
+
+    % Plot the sampled signal
     figure;
-    
-    % Plotten des abgetasteten Signals gegen den neuen Zeitvektor
-    plot(t_new, ys);
-    
-    % Beschriftung der x-Achse: Zeit in Sekunden
-    xlabel('Zeit [s]');
-    
-    % Beschriftung der y-Achse: Amplitude des abgetasteten EKG-Signals
+    plot(t_sampled_30sec, signal_sampled_30sec); % Plot first 30 seconds
+    title('Sampled ECG Signal with 30 seconds duration');
+    xlabel('Zeit /s');
     ylabel('Amplitude');
-    
-    % Festlegen der x-Achse, um nur die ersten 30 Sekunden anzuzeigen
-    xlim([0 30]);
-    
-    % Titel des Plots
-    title('Abgetastetes EKG-Signal');
+
+    % Health Bot confirmation message for successful sampling
+    disp('Health Bot: And... done! Your sampled ECG signal is ready.');
 end
 
-k = 4 
-Torig = 128
+
+
+
+   
