@@ -44,6 +44,9 @@ function feierabend_philipp_filtering(signal, t)
         xlabel('Zeit /s');
         ylabel('Amplitude');
         
+        % Dynamische Anpassung des xlim, basierend auf dem letzten x-Wert
+        xlim([min(t) t(end)]);  % Der rechte Rand wird auf den letzten Wert von t gesetzt
+
         % Assign the filtered signal to the global workspace as y_f
         assignin('base', 'y_filtered', signal_filtered);  % 'base' specifies the global workspace
         
@@ -54,3 +57,4 @@ function feierabend_philipp_filtering(signal, t)
         disp('Signal Processing Toolbox is not installed.');
     end
 end
+
