@@ -57,4 +57,21 @@ feierabend_philipp_fft(signal, t);
 % 5. ECG_SR: The unlabeled test dataset
 
 %% Task 5
+%% Task 5.1 and 5.2
+
+% Main script for processing and analyzing the noisy ECG signal
+clear;
+clc;
+
+% Load the ECG data, assuming the file 'ECGData_Ex2_labeled.mat' is in the current directory
+% The code can be adapted to load and process other datasets as long as they contain the necessary variables.
+load('ECGData_Ex2_labeled.mat');
+
+% Store the ECG signal in the variable 'signal' and consider the first time series
+signal = ECG_SR;  
+% signal = ECG_ARR; 
+% signal = ECG_CHF; 
+
+% Call the function to plot the signal
+feierabend_philipp_heartrate(signal, t);
 
