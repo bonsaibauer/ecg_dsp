@@ -22,8 +22,11 @@ function feierabend_philipp_fft(signal, t)
     xlabel('Frequenz (Hz)');
     ylabel('Magnitude');
 
-     % Assign the filtered signal to the global workspace as y_f
-     assignin('base', 'y_fft', signal_fft);  % 'base' specifies the global workspace
+    % Dynamische Anpassung des xlim, basierend auf dem letzten Frequenzwert
+    xlim([min(f) f(end)]);  % Der rechte Rand wird auf den letzten Frequenzwert gesetzt
+
+    % Assign the fft signal to the global workspace as y_f
+    assignin('base', 'y_fft', signal_fft);  % 'base' specifies the global workspace
     
     % Health Bot confirmation message for successful FFT analysis
     disp('Health Bot: Here is the frequency spectrum of your ECG signal!');
