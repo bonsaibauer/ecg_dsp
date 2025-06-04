@@ -1,4 +1,4 @@
-function y_f = feierabend_philipp_filtering(y_s, y_t)
+function y_f = feierabend_philipp_filtering(y_s, y_t, plot_filtering)
 
     disp('Step 2.3');
     disp('-------------------------------------------------------------');   
@@ -27,29 +27,33 @@ function y_f = feierabend_philipp_filtering(y_s, y_t)
     % Define the duration for plotting (30 seconds or the length of the signal)
     plot_duration = min(30, y_t(end));  % Plot only the first 30 seconds or the entire signal if shorter
     idx_plot = y_t <= plot_duration;  % Indices for the plot
+    
+    % Plot only if plot_filtering is true
+    if plot_filtering
+        % Plot the original signal and filtered signal for comparison
+        figure;
+        subplot(2,1,1);  % First subplot for original signal
+        plot(y_t(idx_plot), y_s(idx_plot));  % Plot original signal for first 30 seconds
+        title('Sampled ECG Signal');
+        xlabel('Time (s)');
+        ylabel('Amplitude');
+        grid on;
 
-    % Plot the original signal and filtered signal for comparison
-    figure;
-    subplot(2,1,1);  % First subplot for original signal
-    plot(y_t(idx_plot), y_s(idx_plot));  % Plot original signal for first 30 seconds
-    title('Sampled ECG Signal');
-    xlabel('Time (s)');
-    ylabel('Amplitude');
-    grid on;
+        subplot(2,1,2);  % Second subplot for filtered signal
+        plot(y_t(idx_plot), signal_filtered(idx_plot));  % Plot filtered signal for first 30 seconds
+        title('Filtered ECG Signal with Band-Pass Filter');
+        xlabel('Time (s)');
+        ylabel('Amplitude');
+        grid on;
 
-    subplot(2,1,2);  % Second subplot for filtered signal
-    plot(y_t(idx_plot), signal_filtered(idx_plot));  % Plot filtered signal for first 30 seconds
-    title('Filtered ECG Signal with Band-Pass Filter');
-    xlabel('Time (s)');
-    ylabel('Amplitude');
-    grid on;
+        % Dynamically adjust the xlim based on the time vector
+        xlim([min(y_t(idx_plot)) max(y_t(idx_plot))]);
 
-    % Dynamically adjust the xlim based on the time vector
-    xlim([min(y_t(idx_plot)) max(y_t(idx_plot))]);
-
-    disp('Health Bot: Yay! Your ECG signal is successfully filtered.');
+        disp('Health Bot: Yay! Your ECG signal is successfully filtered.');
+    else
+        disp('Health Bot: Plotting skipped.');
+    end
 
     % Return the filtered signal
     y_f = signal_filtered;
 end
-
