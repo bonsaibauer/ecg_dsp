@@ -40,7 +40,7 @@ function pulse = feierabend_philipp_heartrate(signal, t)
     plot(t, signal);
     hold on;
     plot(t(locs), peaks, 'ro');  % Mark R-peaks
-    title('ECG Signal with Detected R-Peaks');
+    title('ECG Signal with All-detected Peaks');
     xlabel('Time (s)');
     ylabel('Amplitude');
     xlim([min(t) t(end)]);

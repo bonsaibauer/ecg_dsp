@@ -25,7 +25,7 @@ y_f = feierabend_philipp_filtering(y_s, y_t); % Signal Processing Toolbox is req
 
 y_f_fft = feierabend_philipp_fft(y_f, y_t);
 
-%% Task 5.1 - Herzfrequenzberechnung
+%% Task 5.1 - Heart Rate Calculation
 
 clear;                                          % Clears all variables from the workspace and closes all open figures.
 clc;                                            % Clears the command window and resets the display.
@@ -34,7 +34,16 @@ combined_signal = [ECG_SR; ECG_ARR; ECG_CHF];   % Add them vertically
 signal = combined_signal(1, :);                 % Extract the first time series (first row)
 pulse = feierabend_philipp_heartrate(signal, t);
 
-%% Task 5.1
+%% Task 5.1 - Heart Rate Calculation modified for 5.2
+
+clear;                                          % Clears all variables from the workspace and closes all open figures.
+clc;                                            % Clears the command window and resets the display.
+load('ECGData_Ex2_labeled.mat'); 
+combined_signal = [ECG_SR; ECG_ARR; ECG_CHF];   % Add them vertically
+signal = combined_signal(1, :);                 % Extract the first time series (first row)
+pulse = feierabend_philipp_heartrate_modified(signal, t);
+
+%% Task 5.2
 
 % You are provided with labeled datasets stored in a file named
 % ECGData_Ex2_labeled.mat, which contains 5 variables:
@@ -44,26 +53,21 @@ pulse = feierabend_philipp_heartrate(signal, t);
 % 3. ECG_CHF: Dataset with Congestive Heart Failures (CHF)
 % 4. ECG_SR: Dataset with Sinus Rhythms (SR)
 % 5. ECG_SR: The unlabeled test dataset
-%% Task 5.2 - Klassifikation des Herzrhythmus
 
-% Main script for processing and classifying the heart rhythm (Task 5.2)
-clear;
-clc;
+clear;                                          % Clears all variables from the workspace and closes all open figures.
+clc;                                            % Clears the command window and resets the display.
+load('ECGData_Ex2_labeled.mat'); 
+combined_signal = [ECG_SR; ECG_ARR; ECG_CHF];   % Add them vertically
+signal = combined_signal(4, :);                 % Extract the first time series (first row)
 
-% Display message once processing is complete
-disp('Health Bot: Oops, I can’t help with that right now – gotta check with my brother first!');
-disp('Health AI (Machine Learning Bot): Alright, we need testdata, I’ll get back to you in a sec!');
+T = t(end);  
+T_orig = 128; 
+k = 2; 
 
-% Load the labeled ECG data for training
-load('ECGData_Ex2_labeled.mat');
+[y_s, y_t] = feierabend_philipp_sampling(signal, T, T_orig, k); 
+y_f = feierabend_philipp_filtering(y_s, y_t);
+y_f_fft = feierabend_philipp_fft(y_f, y_t);
 
-% Step 1: Select the training signals (e.g., Sinus Rhythm, Arrhythmia, Congestive Heart Failure)
-signal = ECG_SR(1, :);  % Sinus Rhythm
-traindata_signal_ARR = ECG_ARR;  % Arrhythmia
-traindata_signal_CHF = ECG_CHF;  % Congestive Heart Failure
-
-% Step 2: Process all time series (Sinus Rhythm, Arrhythmia, CHF) and save results to the global workspace
-feierabend_philipp_signal_analyzing(signal, t)
 
 
 
