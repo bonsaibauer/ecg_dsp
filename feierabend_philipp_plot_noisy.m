@@ -1,5 +1,6 @@
 function feierabend_philipp_plot_noisy(signal, T)
-    disp('Step 2.1 ');
+    
+    disp('Step 2.1');
     disp('-------------------------------------------------------------');   
     disp('Health Bot: Analyzing the signal...');
 

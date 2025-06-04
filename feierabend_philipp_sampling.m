@@ -1,5 +1,6 @@
 function [y_s, y_t] = feierabend_philipp_sampling(signal, T, T_orig, k)
-    disp('Step 2.2 ');
+    
+    disp('Step 2.2');
     disp('-------------------------------------------------------------');   
     disp('Health Bot: Sampling the signal...');
 

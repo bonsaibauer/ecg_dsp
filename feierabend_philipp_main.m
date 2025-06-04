@@ -2,50 +2,39 @@
 % Main script for loading, processing, and plotting the ECG signals
 % The code is designed in a way that it can work with different datasets.
 
-%% Task 2
-%% Task 2.1 - Loading and Plotting the Noisy ECG Signal
-% In this task, we load the noisy ECG signal from the 'noisy_ecg.mat' file
-% and plot it for the first 30 seconds. The code is designed to work with
-% different ECG datasets as long as the required variables are present.
+%% Task 2.1 - Loading and Plotting the Noisy Signal
 
-% Main script for processing and analyzing the noisy ECG signal
-clear;
-clc;
+clear;                   % Clears all variables from the workspace and closes all open figures.
+clc;                     % Clears the command window and resets the display.
+load('noisy_ecg.mat');   % Load noisy ECG data from 'noisy_ecg.mat'
+signal = noisy_ecg;      % Store ECG signal
+T = t(end);              % Total time duration of the ECG    
+feierabend_philipp_plot_noisy(signal, T); 
 
-% Load the noisy ECG data, assuming the file 'noisy_ecg.mat' is in the current directory
-% The code can be adapted to load and process other datasets as long as they contain the necessary variables.
-load('noisy_ecg.mat');
+%% Task 2.2  - Sampling the Noisy Signal
 
-% Store the noisy ECG signal in the variable 'signal'
-signal = noisy_ecg;  
+T_orig = 128;    % Original sampling rate (e.g., 128 Hz for original signal)
+k = 4;           % Downsampling factor (e.g., 4 for downsampling)
+[y_s, y_t] = feierabend_philipp_sampling(signal, T, T_orig, k);   
 
-% The total time is determined by the last value in the time vector 't',
-% If the time vector 't' is not available, we can specify the total duration of the ECG recording here instead.
-T = t(end);    
+%% Task 2.3 - Filter the Noisy sampled Signal
 
-% Call the function to plot the signal
-feierabend_philipp_plot_noisy(signal, T);
+y_f = feierabend_philipp_filtering(y_s, y_t); % Signal Processing Toolbox is required
 
-%% Task 2.2 
-% Original sampling rate (e.g., 128 Hz for original signal)
-T_orig = 128;
+%% Task 2.4 - FFT for sampled and filtered Signal
 
-% Downsampling factor (e.g., 4 for downsampling)
-k = 4;
+y_f_fft = feierabend_philipp_fft(y_f, y_t);
 
-% Call the function to plot the signal
-feierabend_philipp_sampling(signal, T, T_orig, k);
+%% Task 5.1 - Herzfrequenzberechnung
 
-%% Task 2.3
-% Call the function to plot the signal
-feierabend_philipp_filtering(signal, t);
+clear;                                          % Clears all variables from the workspace and closes all open figures.
+clc;                                            % Clears the command window and resets the display.
+load('ECGData_Ex2_labeled.mat'); 
+combined_signal = [ECG_SR; ECG_ARR; ECG_CHF];   % Add them vertically
+signal = combined_signal(1, :);                 % Extract the first time series (first row)
+pulse = feierabend_philipp_heartrate(signal, t);
 
-%% Task 2.4
-% Call the function to plot the signal
-feierabend_philipp_fft(signal, t);
-
-%% Part II
-%% Task 4
+%% Task 5.1
 
 % You are provided with labeled datasets stored in a file named
 % ECGData_Ex2_labeled.mat, which contains 5 variables:
@@ -55,23 +44,28 @@ feierabend_philipp_fft(signal, t);
 % 3. ECG_CHF: Dataset with Congestive Heart Failures (CHF)
 % 4. ECG_SR: Dataset with Sinus Rhythms (SR)
 % 5. ECG_SR: The unlabeled test dataset
+%% Task 5.2 - Klassifikation des Herzrhythmus
 
-%% Task 5
-%% Task 5.1 and 5.2
-
-% Main script for processing and analyzing the noisy ECG signal
+% Main script for processing and classifying the heart rhythm (Task 5.2)
 clear;
 clc;
 
-% Load the ECG data, assuming the file 'ECGData_Ex2_labeled.mat' is in the current directory
-% The code can be adapted to load and process other datasets as long as they contain the necessary variables.
+% Display message once processing is complete
+disp('Health Bot: Oops, I can’t help with that right now – gotta check with my brother first!');
+disp('Health AI (Machine Learning Bot): Alright, we need testdata, I’ll get back to you in a sec!');
+
+% Load the labeled ECG data for training
 load('ECGData_Ex2_labeled.mat');
 
-% Store the ECG signal in the variable 'signal' and consider the first time series
-signal = ECG_SR;  
-% signal = ECG_ARR; 
-% signal = ECG_CHF; 
+% Step 1: Select the training signals (e.g., Sinus Rhythm, Arrhythmia, Congestive Heart Failure)
+signal = ECG_SR(1, :);  % Sinus Rhythm
+traindata_signal_ARR = ECG_ARR;  % Arrhythmia
+traindata_signal_CHF = ECG_CHF;  % Congestive Heart Failure
 
-% Call the function to plot the signal
-feierabend_philipp_heartrate(signal, t);
+% Step 2: Process all time series (Sinus Rhythm, Arrhythmia, CHF) and save results to the global workspace
+feierabend_philipp_signal_analyzing(signal, t)
+
+
+
+
 

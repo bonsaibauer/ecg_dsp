@@ -1,4 +1,7 @@
 function y_f = feierabend_philipp_filtering(y_s, y_t)
+
+    disp('Step 2.3');
+    disp('-------------------------------------------------------------');   
     disp('Health Bot: Filtering the ECG signal...');
 
     % Calculate the sampling frequency based on the time vector y_t
