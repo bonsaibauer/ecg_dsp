@@ -1,39 +1,73 @@
-function feierabend_philipp_sampling(signal, T, T_orig, k)
-    disp('-------------------------------------------------------------');
-    disp('Task 2.2');
-    disp('-------------------------------------------------------------');  
+function [y_s, y_t] = feierabend_philipp_sampling(signal, T, T_orig, k)
+    disp('Step 2.2 ');
+    disp('-------------------------------------------------------------');   
+    disp('Health Bot: Sampling the signal...');
+
+    % Validation
+    if isempty(signal) || ~isnumeric(signal)
+        warning('Health Bot: Invalid signal. No plot.');
+        return;  % Exit if validation fails
+    end
+    if ~isscalar(T) || T <= 0
+        warning('Health Bot: Invalid time T. No plot.');
+        return;  % Exit if validation fails
+    end
+    if length(signal) < 2
+        warning('Health Bot: Signal too short. No plot.');
+        return;  % Exit if validation fails
+    end
     
-    % Health Bot Introduction
-    disp('Health Bot: Oh, I have a new task! Let me get started on sampling your ECG signal...'); 
-    pause(2);
-    disp('Health Bot: Just a moment, I am almost done...');
-    pause(2);
+    % Calculate the new sampling frequency
+    T_s = T_orig / k;
 
-    % Calculation of the new sampling rate
-    T_s = 1 / (T_orig / k);  % New sampling time (s) needed to sample the signal with a factor of k
+    % Perform down-sampling by the factor 'k'
+    sampled_signal = signal(1:k:end);  % Downsampling by selecting every k-th sample
 
-    % Create the time vector for the sampled signal
-    t_sampled = 0:T_s:T;  % Time vector for the sampled signal, from 0 to T
+    % Create a new time vector for the sampled signal based on the new sampling rate
+    t_sampled = (0:length(sampled_signal)-1) / T_s;  % Time vector for the sampled signal
 
-    t = linspace(0, T, length(signal));         % Reconstruct the time vector from total time
+    % Check the actual duration of the signal
+    signal_duration = t_sampled(end);
 
-    % Interpolation for signal resampling
-    signal_sampled = interp1(t, signal, t_sampled, 'spline');  % Interpolate the signal to the new time axis
+    % Plot the first 30 seconds, but at most up to the length of the signal
+    plot_duration = min(signal_duration, 30);  % If the signal is shorter than 30 seconds, use the actual length
 
-    % Limit the plot to the first 30 seconds
-    t_sampled_30sec = t_sampled(t_sampled <= 30);  % Time vector limited to 30 seconds
-    signal_sampled_30sec = signal_sampled(1:length(t_sampled_30sec));  % Corresponding sampled signal
-
-    % Plot the sampled signal
+    idx_plot = t_sampled <= plot_duration;  % Indices for the plot
     figure;
-    plot(t_sampled_30sec, signal_sampled_30sec); % Plot first 30 seconds
-    title('Sampled ECG Signal with 30 seconds duration');
-    xlabel('Zeit /s');
+    
+    % Plot the original ECG signal for comparison
+    subplot(2,1,1);  % First subplot for original signal
+    t_original = linspace(0, T, length(signal));
+    idx_original = t_original >= 0 & t_original <= 30;
+    plot(t_original(idx_original), signal(idx_original));  % Plot original signal for first 30 seconds
+    title('Original ECG Signal (30 seconds)');
+    xlabel('Time (s)');
     ylabel('Amplitude');
+    grid on;
 
-    % Health Bot confirmation message for successful sampling
-    disp('Health Bot: And... done! Your sampled ECG signal is ready.');
+    % Plot the sampled ECG signal
+    subplot(2,1,2);  % Second subplot for sampled signal
+    plot(t_sampled(idx_plot), sampled_signal(idx_plot));  % Plot sampled signal for first 30 seconds
+    title('Sampled ECG Signal (30 seconds)');
+    xlabel('Time (s)');
+    ylabel('Amplitude');
+    grid on;
+
+    % Message for longer signals
+    if T > 30
+        disp('Health Bot: Signal is longer than 30 seconds.');
+    end
+
+    disp('Health Bot: Plot successfully created!');
+
+    % Return both the sampled signal and the corresponding time vector
+    y_s = sampled_signal;
+    y_t = t_sampled;  % Return the time vector for the sampled signal
+
+    disp('Health Bot: Sampling complete!');
 end
+
+
 
 
 
