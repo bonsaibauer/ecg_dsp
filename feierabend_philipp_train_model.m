@@ -1,4 +1,4 @@
-function model = feierabend_philipp_train_model(ECG_SR, ECG_ARR, ECG_CHF, t)
+function model = feierabend_philipp_train_model(ECG_SR, ECG_ARR, ECG_CHF, t, T, T_orig, k, sampling_filtering)
     % Prepare features and labels
     features = [];
     labels = {};
@@ -69,7 +69,17 @@ function model = feierabend_philipp_train_model(ECG_SR, ECG_ARR, ECG_CHF, t)
         signal = combined_signal(signal_index, :);
         
         % Calculate the features for the current test signal
-        [pulse, RR_intervals, avg_RR, max_RR, min_RR, std_RR] = feierabend_philipp_heartrate_modified(signal, t, false);
+        if sampling_filtering
+            % Perform sampling and filtering when sampling_filtering is true
+            [y_s, y_t] = feierabend_philipp_sampling(signal, T, T_orig, k, false); 
+            y_f = feierabend_philipp_filtering(y_s, y_t, false);
+            % Proceed to heart rate calculation using the filtered signal
+            [pulse, RR_intervals, avg_RR, max_RR, min_RR, std_RR] = feierabend_philipp_heartrate_modified(y_f, y_t, false);
+        else
+            % Skip sampling and filtering, directly use the original signal
+            [pulse, RR_intervals, avg_RR, max_RR, min_RR, std_RR] = feierabend_philipp_heartrate_modified(signal, t, false);
+        end
+
 
         % Determine the true label for the test signal
         if signal_index <= size(ECG_SR, 1)

@@ -64,8 +64,10 @@ function diagnosis = feierabend_philipp_classification(RR_intervals, pulse, avg_
     label_map = {'SR', 'ARR', 'CHF'};
     predicted_label_str = label_map{predicted_label_num};
 
-    % Always display the predicted label
-    disp(['Health Bot: The predicted classification is: ', predicted_label_str]);
+    % Always display the predicted label with emphasis
+    disp('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+    disp(['%%%%%%%%%%%%%%%%%%%%%%%  The predicted classification is: ', upper(predicted_label_str), ' %%%%%%%%%%%%%%%%%%%%%%%']);
+    disp('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
 
     % If the dataset label is 'unknown', output a specific message
     if strcmp(dataset_label, 'unknown')
