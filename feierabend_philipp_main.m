@@ -104,8 +104,3 @@ view(model.Trees{1}, 'Mode', 'graph');
 
 % Classify the signal using the trained model
 diagnosis = feierabend_philipp_classification(RR_intervals, pulse, avg_RR, max_RR, min_RR, std_RR, dataset_label, model);
-
-
-
-
-
