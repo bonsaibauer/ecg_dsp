@@ -4,6 +4,13 @@ function y_f = feierabend_philipp_filtering(y_s, y_t, plot_filtering)
     disp('-------------------------------------------------------------');   
     disp('Health Bot: Filtering the ECG signal...');
 
+    % Check if the signal is long enough (at least 25 data points)
+    if length(y_s) <= 24
+        disp('Signal too short, skipping filtering.');
+        y_f = y_s;  % Return the original signal if it's too short
+        return;  % Exit the function without applying the filter
+    end
+
     % Calculate the sampling frequency based on the time vector y_t
     fs = 1 / (y_t(2) - y_t(1));  % Calculate the sampling frequency
     
