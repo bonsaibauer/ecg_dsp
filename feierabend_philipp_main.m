@@ -15,12 +15,12 @@ feierabend_philipp_plot_noisy(signal, T);
 
 T_orig = 128;             % Original sampling rate (e.g., 128 Hz for original signal)
 k = 4;                    % Downsampling factor (e.g., 4 for downsampling)
-plot_sampling = true;     % Set to false if you want to skip plotting for 5.2
+plot_sampling = true;     % Set to false if you want to skip plotting for Task 5.2
 [y_s, y_t] = feierabend_philipp_sampling(signal, T, T_orig, k, plot_sampling);  
 
 %% Task 2.3 - Filter the Noisy sampled Signal
 
-plot_filtering = true;    % Set to false if you want to skip plotting for 5.2
+plot_filtering = true;    % Set to false if you want to skip plotting for Task 5.2
 y_f = feierabend_philipp_filtering(y_s, y_t, plot_filtering); % Signal Processing Toolbox is required
 
 %% Task 2.4 - FFT for sampled and filtered Signal
@@ -81,8 +81,6 @@ dataset_label = 'unknown';
 
 % Feature vector for classification
 features = [pulse, avg_RR, max_RR, min_RR, std_RR];
-
-% Visualize decision tree for the test signal
 
 % Predict class probabilities for each tree in the ensemble
 [~, score] = predict(model, features);  % Get the score (probabilities) from each tree
