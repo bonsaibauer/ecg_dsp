@@ -59,7 +59,7 @@ function [y_s, y_t] = feierabend_philipp_sampling(signal, T, T_orig, k, plot_sam
 
         % Message for longer signals
         if T > 30
-            disp('Health Bot: Signal is longer than 30 seconds.');
+            disp('Health Bot: The signal is shown for only the first 30 seconds.');
         end
 
         disp('Health Bot: Plot successfully created!');

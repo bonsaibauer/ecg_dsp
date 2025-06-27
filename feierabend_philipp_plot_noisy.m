@@ -28,7 +28,7 @@ function feierabend_philipp_plot_noisy(signal, T)
 
     % Message for longer signals
     if T > 30
-        disp('Health Bot: Signal is longer than 30 seconds.');
+        disp('Health Bot: The signal is shown for only the first 30 seconds.');
     end
 
     disp('Health Bot: Plot successfully created!');
